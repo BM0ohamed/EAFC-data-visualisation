@@ -18,23 +18,14 @@ export default function Navbar() {
         />
         <h1 className="text-xl font-bold">FC24</h1>
         <div className="flex space-x-4">
-          <a className="hover:text-gray-300" href="#">
-            About
+          <a className="hover:text-gray-300" href="/">
+            Home Page
           </a>
           <a className="hover:text-gray-300" href="#">
             Features
           </a>
-          <a className="hover:text-gray-300" href="#">
-            Ultimate Team
-          </a>
-          <a className="hover:text-gray-300" href="#">
-            Ultimate Team Hub
-          </a>
-          <a className="hover:text-gray-300" href="#">
-            FC 24 Ratings
-          </a>
-          <a className="hover:text-gray-300" href="#">
-            News & Community
+          <a className="hover:text-gray-300" href="list-players">
+            Players list
           </a>
         </div>
       </div>
