@@ -1,4 +1,3 @@
-type TPosition = "ST" | "CM" | "CF"
 type TPlayerRating = {
 	pace: number
 	shooting: number
@@ -9,11 +8,11 @@ type TPlayerRating = {
 }
 
 type TPlayer = {
+	overall: number
 	name: string
-	image?: string
 	nationality: string
 	teamName: string
-	position: TPosition
+	position: string
 	rating: TPlayerRating
 	playerId: number
 }
