@@ -12,6 +12,7 @@ export default function PlayerLine({
 									   position,
 									   rating,
 									   playerId,
+									   overall,
 								   }: PlayerLineProps
 ) {
 	return (
@@ -60,7 +61,7 @@ export default function PlayerLine({
 				/>
 			</td>
 			<td className="p-4">{position}</td>
-			<td className="p-4">{doRatingOverral(rating)}</td>
+			<td className="p-4">{overall}</td>
 			<td className="p-4">{rating.pace}</td>
 			<td className="p-4">{rating.shooting}</td>
 			<td className="p-4">{rating.passing}</td>
