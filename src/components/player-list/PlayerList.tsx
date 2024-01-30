@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import PlayerLine from "@/components/PlayerLine";
 
-const ITEMS_PER_PAGE = 45;
+const ITEMS_PER_PAGE: number = 45;
 
-const PlayerList: React.FC = () => {
+interface PlayerListProps {
+	selectedVersion: string; // Define the prop
+}
+
+const PlayerList: React.FC<PlayerListProps> = ({ selectedVersion }) => {
 	const [players, setPlayers] = useState<TPlayer[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -16,7 +20,8 @@ const PlayerList: React.FC = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await fetch('/api/players');
+				const apiUrl = `/api/players?fifaVersion=${selectedVersion}`;
+				const res = await fetch(apiUrl);
 				if (!res.ok) {
 					throw new Error(`Error: ${res.status}`);
 				}
