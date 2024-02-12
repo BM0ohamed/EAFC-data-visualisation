@@ -27,7 +27,7 @@ export default function PlayerLine({
 					alt="Player"
 					className="h-10 w-10 rounded-full"
 					height="40"
-					src={`https://cdn.futbin.com/content/fifa24/img/players/${playerId}.png?v=${fifaVersion}`}
+					src={`https://cdn.futbin.com/content/fifa${fifaVersion}/img/players/${playerId}.png?v=${fifaVersion}`}
 					style={{
 						aspectRatio: "40/40",
 						objectFit: "cover",
