@@ -8,7 +8,6 @@ import PlayerList from "@/components/player-list/PlayerList";
 export default function Home() {
 	const [selectedVersion , setSelectedVersion] = useState("24"); // Initialize with FIFA 15 as default
 
-	// Function to handle the dropdown change event
 	const handleVersionChange = (event: ChangeEvent<HTMLSelectElement>) => {
 		console.log("event value",event.target.value)
 		console.log(parseInt(event.target.value as string))

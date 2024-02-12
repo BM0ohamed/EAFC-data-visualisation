@@ -3,7 +3,7 @@ import path from 'path';
 import csv from 'csv-parser';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const CSV_FILE_PATH = path.join(process.cwd(), 'src', 'dataset', 'filtered','cropped_male_players.csv');
+const CSV_FILE_PATH = path.join(process.cwd(), 'src', 'dataset','male_players.csv');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const { fifaVersion  } = req.query;
