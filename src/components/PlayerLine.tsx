@@ -13,6 +13,7 @@ export default function PlayerLine({
 									   rating,
 									   playerId,
 									   overall,
+									   teamId,
 								   }: PlayerLineProps
 ) {
 	return (
@@ -52,7 +53,8 @@ export default function PlayerLine({
 					alt="Team Logo"
 					className="h-5"
 					height="20"
-					src="https://images.ctfassets.net/rs6bgs1g8dbr/65jMMhRXpQl9A65F6kQtBe/c7b08b18574c48533c1526783bd9b601/73.png"
+					src={`https://images.ctfassets.net/rs6bgs1g8dbr/65jMMhRXpQl9A65F6kQtBe/c7b08b18574c48533c1526783bd9b601/${teamId}.png`
+					}
 					style={{
 						aspectRatio: "20/20",
 						objectFit: "cover",

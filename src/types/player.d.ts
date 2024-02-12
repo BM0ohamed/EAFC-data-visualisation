@@ -15,4 +15,5 @@ type TPlayer = {
 	position: string
 	rating: TPlayerRating
 	playerId: number
+	teamId: number
 }
