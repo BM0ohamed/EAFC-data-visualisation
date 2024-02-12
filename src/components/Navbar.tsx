@@ -29,15 +29,6 @@ export default function Navbar() {
           </a>
         </div>
       </div>
-      <div className="flex items-center space-x-4">
-        <a className="hover:text-gray-300" href="#">
-          Help
-        </a>
-        <a className="hover:text-gray-300" href="#">
-          Account
-        </a>
-        <Button className="bg-green-600 hover:bg-green-700">Buy Now</Button>
-      </div>
     </nav>
   )
 }
