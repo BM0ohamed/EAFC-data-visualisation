@@ -2,7 +2,8 @@ import { doRatingOverral } from "@/utils/rating"
 import React from "react"
 
 type PlayerLineProps = TPlayer & {
-	ranking: number
+	ranking: number,
+	fifaVersion: string;
 }
 export default function PlayerLine({
 									   name,
@@ -14,6 +15,8 @@ export default function PlayerLine({
 									   playerId,
 									   overall,
 									   teamId,
+									   nationId,
+									   fifaVersion
 								   }: PlayerLineProps
 ) {
 	return (
@@ -24,9 +27,7 @@ export default function PlayerLine({
 					alt="Player"
 					className="h-10 w-10 rounded-full"
 					height="40"
-					src={
-						'https://media.contentapi.ea.com/content/dam/ea/easfc/fc-24/ratings/common/full/player-portraits/p' + playerId + '.png.adapt.50w.png'
-					}
+					src={`https://cdn.futbin.com/content/fifa24/img/players/${playerId}.png?v=${fifaVersion}`}
 					style={{
 						aspectRatio: "40/40",
 						objectFit: "cover",
@@ -40,7 +41,7 @@ export default function PlayerLine({
 					alt="Country Flag"
 					className="h-5"
 					height="20"
-					src="https://images.ctfassets.net/rs6bgs1g8dbr/5Il39kdF0vuuJ1Gc18R7Ww/b982b6f565d2d59fe0dc61e5ca620092/f_18.png"
+					src={`https://cdn.futbin.com/content/fifa24/img/nation/${nationId}.png`}
 					style={{
 						aspectRatio: "30/20",
 						objectFit: "cover",
@@ -53,8 +54,7 @@ export default function PlayerLine({
 					alt="Team Logo"
 					className="h-5"
 					height="20"
-					src={`https://images.ctfassets.net/rs6bgs1g8dbr/65jMMhRXpQl9A65F6kQtBe/c7b08b18574c48533c1526783bd9b601/${teamId}.png`
-					}
+					src={`https://cdn.futbin.com/content/fifa24/img/clubs/${teamId}.png`}
 					style={{
 						aspectRatio: "20/20",
 						objectFit: "cover",

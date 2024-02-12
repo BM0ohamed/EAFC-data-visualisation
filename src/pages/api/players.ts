@@ -31,7 +31,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					physicality: parseFloat(player.physic),
 				},
 				playerId: parseInt(player.player_id),
-				teamId: parseInt(player.club_team_id)
+				teamId: parseInt(player.club_team_id),
+				nationId: parseInt(player.nationality_id)
 			});
 		}
 	}

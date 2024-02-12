@@ -75,6 +75,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ selectedVersion }) => {
 									key={`${player.name}-${playerIndex}`}
 									{...player}
 									ranking={offset + playerIndex + 1}
+									fifaVersion={selectedVersion}
 								/>
 							))}
 							</tbody>

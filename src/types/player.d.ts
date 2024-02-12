@@ -16,4 +16,5 @@ type TPlayer = {
 	rating: TPlayerRating
 	playerId: number
 	teamId: number
+	nationId: number
 }
