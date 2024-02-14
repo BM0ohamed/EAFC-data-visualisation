@@ -5,6 +5,7 @@ type TPlayerRating = {
 	dribbling: number
 	defending: number
 	physicality: number
+	overall ?: number
 }
 
 type TPlayer = {
@@ -17,4 +18,6 @@ type TPlayer = {
 	playerId: number
 	teamId: number
 	nationId: number
+	fifaVersion: number
+	valueEur: number
 }

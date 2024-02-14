@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import ReactPaginate from 'react-paginate';
 import PlayerLine from "@/components/PlayerLine";
 import { SyncLoader } from "react-spinners";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious
+} from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 
-const ITEMS_PER_PAGE: number = 45;
+const ITEMS_PER_PAGE: number = 10;
 
 interface PlayerListProps {
 	selectedVersion: string; // Define the prop
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ selectedVersion }) => {
+const PlayerList: React.FC<PlayerListProps> = ({selectedVersion}) => {
 	const [players, setPlayers] = useState<TPlayer[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(0);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,7 +31,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ selectedVersion }) => {
 		const fetchData = async () => {
 			try {
 				setIsLoading(true); // Set isLoading to true at the start of the request
-				const apiUrl = `/api/players?fifaVersion=${selectedVersion}`;
+				const apiUrl = `/api/get-players-fifa-version?fifaVersion=${selectedVersion}`;
 				const res = await fetch(apiUrl);
 				if (!res.ok) {
 					throw new Error(`Error: ${res.status}`);
@@ -75,23 +83,50 @@ const PlayerList: React.FC<PlayerListProps> = ({ selectedVersion }) => {
 									key={`${player.name}-${playerIndex}`}
 									{...player}
 									ranking={offset + playerIndex + 1}
-									fifaVersion={selectedVersion}
 								/>
 							))}
 							</tbody>
 						</table>
 					</div>
-					<ReactPaginate
-						previousLabel={'Previous'}
-						nextLabel={'Next'}
-						breakLabel={'...'}
-						pageCount={Math.ceil(players.length / ITEMS_PER_PAGE)}
-						marginPagesDisplayed={2}
-						pageRangeDisplayed={5}
-						onPageChange={handlePageChange}
-						containerClassName={'pagination'}
-						activeClassName={'active'}
-					/>
+
+					<Pagination className="pt-5">
+						<PaginationContent>
+							<PaginationItem>
+								<PaginationPrevious
+									onClick={() => {
+										if (currentPage === 0) {
+											setCurrentPage(0);
+										} else {
+											setCurrentPage(currentPage - 1);
+										}
+									}}
+								/>
+							</PaginationItem>
+							{Array.from({length: Math.ceil(players.length / ITEMS_PER_PAGE)}).map(
+								(_, page) => (
+									<PaginationItem key={page}>
+										<PaginationLink
+											className={cn("cursor-pointer", {"bg-white text-black": page === currentPage})}
+											isActive={page === currentPage}
+											onClick={() => setCurrentPage(page)}>
+											{page + 1}
+										</PaginationLink>
+									</PaginationItem>
+								)
+							)}
+							<PaginationItem>
+								<PaginationNext
+									onClick={() => {
+										if (currentPage === Math.ceil(players.length / ITEMS_PER_PAGE) - 1) {
+											setCurrentPage(Math.ceil(players.length / ITEMS_PER_PAGE) - 1);
+										} else {
+											setCurrentPage(currentPage + 1);
+										}
+									}}
+								/>
+							</PaginationItem>
+						</PaginationContent>
+					</Pagination>
 				</div>
 			)}
 		</div>

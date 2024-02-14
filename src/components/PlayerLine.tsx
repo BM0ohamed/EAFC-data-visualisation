@@ -1,9 +1,10 @@
 import { doRatingOverral } from "@/utils/rating"
 import React from "react"
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
 type PlayerLineProps = TPlayer & {
 	ranking: number,
-	fifaVersion: string;
 }
 export default function PlayerLine({
 									   name,
@@ -21,21 +22,28 @@ export default function PlayerLine({
 ) {
 	return (
 		<tr className="bg-gray-900 hover:bg-gray-800">
-			<td className="p-4">{ranking}</td>
-			<td className="p-4 flex items-center space-x-2">
-				<img
-					alt="Player"
-					className="h-10 w-10 rounded-full"
-					height="40"
-					src={`https://cdn.futbin.com/content/fifa${fifaVersion}/img/players/${playerId}.png?v=${fifaVersion}`}
-					style={{
-						aspectRatio: "40/40",
-						objectFit: "cover",
-					}}
-					width="40"
-				/>
-				<span>{name}</span>
+			<td className="p-4">
+				{ranking}
 			</td>
+			<td>
+				<Link className="hover:text-gray-300 p-4 flex items-center space-x-2"
+					  href={`/player-stat-over-time?playerName=${name}`}>
+					<img
+						alt="Player"
+						className="h-10 w-10 rounded-full"
+						height="40"
+						src={`https://cdn.futbin.com/content/fifa${fifaVersion}/img/players/${playerId}.png?v=${fifaVersion}`}
+						style={{
+							aspectRatio: "40/40",
+							objectFit: "cover",
+						}}
+						width="40"
+					/>
+					<span>{name}</span>
+					<ExternalLink />
+				</Link>
+			</td>
+
 			<td className="p-4">
 				<img
 					alt="Country Flag"
