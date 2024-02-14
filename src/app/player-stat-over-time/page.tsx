@@ -1,17 +1,28 @@
 "use client"
+import { Suspense } from 'react'; // Import Suspense
 import LinePlot from "@/components/line-plot/LinePlot";
 import { useSearchParams } from "next/navigation";
 
 export default function Home() {
-	const query = useSearchParams();
-	const playerName = query?.get("playerName");
 	return (
 		<div className="px-4 py-6">
-			{!!playerName &&<LinePlot
-				initialSelectedPlayerName={playerName}
-			></LinePlot>}
-			{ !playerName && <LinePlot></LinePlot>
-			}
+			{/* Wrap the content using Suspense */}
+			<Suspense fallback={<div>Loading...</div>}>
+				<PlayerStatOverTime/>
+			</Suspense>
 		</div>
-	)
+	);
+}
+
+// Define a separate component for player stats
+function PlayerStatOverTime() {
+	const query = useSearchParams();
+	const playerName = query?.get("playerName");
+
+	return (
+		<>
+			{!!playerName && <LinePlot initialSelectedPlayerName={playerName}/>}
+			{!playerName && <LinePlot/>}
+		</>
+	);
 }
