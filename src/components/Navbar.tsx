@@ -16,16 +16,16 @@ export default function Navbar() {
           }}
           width="40"
         />
-        <h1 className="text-xl font-bold">FC24</h1>
+        <h1 className="text-xl font-bold">FC_Fut</h1>
         <div className="flex space-x-4">
           <a className="hover:text-gray-300" href="/">
-            Home Page
+            Page d&apos;accueil
           </a>
-          <a className="hover:text-gray-300" href="#">
-            Features
+          <a className="hover:text-gray-300" href="player-stat-over-time">
+            Statistiques détaillées
           </a>
           <a className="hover:text-gray-300" href="list-players">
-            Players list
+            Liste des joueurs
           </a>
         </div>
       </div>

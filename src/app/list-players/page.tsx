@@ -6,11 +6,9 @@ import { FilterIcon } from "lucide-react";
 import PlayerList from "@/components/player-list/PlayerList";
 
 export default function Home() {
-	const [selectedVersion , setSelectedVersion] = useState("24"); // Initialize with FIFA 15 as default
+	const [selectedVersion, setSelectedVersion] = useState("24"); // Initialize with FIFA 15 as default
 
 	const handleVersionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		console.log("event value",event.target.value)
-		console.log(parseInt(event.target.value as string))
 		setSelectedVersion(event.target.value);
 	};
 
@@ -19,11 +17,11 @@ export default function Home() {
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex flex-row gap-4 items-center">
 					<Button className="bg-gray-700 hover:bg-gray-600">
-						Filter <FilterIcon className="ml-2"/>
+						Filtre <FilterIcon className="ml-2"/>
 					</Button>
 					<div>
 						<label htmlFor="fifaVersion" className="mr-2">
-							FIFA Version:
+							Version de Fifa :
 						</label>
 						<select
 							className="bg-gray-700 hover:bg-gray-600"
@@ -46,10 +44,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="text-sm">
-					<span>Showing 45 results</span>
-					<Button className="text-blue-500 hover:text-blue-400 ml-4">
-						Reset all
-					</Button>
+					<span>Nombre de résultats affichés par page : 10</span>
 				</div>
 			</div>
 			<PlayerList selectedVersion={selectedVersion}/>
