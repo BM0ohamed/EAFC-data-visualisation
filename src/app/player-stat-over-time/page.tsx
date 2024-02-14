@@ -14,7 +14,6 @@ export default function Home() {
 	);
 }
 
-// Define a separate component for player stats
 function PlayerStatOverTime() {
 	const query = useSearchParams();
 	const playerName = query?.get("playerName");
