@@ -4,43 +4,50 @@ import { ChangeEvent, useState } from "react"; // Import useState
 import { Button } from "@/components/ui/button";
 import { FilterIcon } from "lucide-react";
 import PlayerList from "@/components/player-list/PlayerList";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue
+} from "@/components/ui/select";
 
 export default function Home() {
 	const [selectedVersion, setSelectedVersion] = useState("24"); // Initialize with FIFA 15 as default
-
-	const handleVersionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		setSelectedVersion(event.target.value);
-	};
 
 	return (
 		<div className="px-4 py-6">
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex flex-row gap-4 items-center">
-					<Button className="bg-gray-700 hover:bg-gray-600">
+					<Button variant={"outline"}
+							className="justify-between border rounded-xl">
 						Filtre <FilterIcon className="ml-2"/>
 					</Button>
 					<div>
-						<label htmlFor="fifaVersion" className="mr-2">
-							Version de Fifa :
-						</label>
-						<select
-							className="bg-gray-700 hover:bg-gray-600"
-							id="fifaVersion"
-							name="fifaVersion"
+						<Select
 							value={selectedVersion}
-							onChange={handleVersionChange}
-						>
-							<option value="15">FIFA 15</option>
-							<option value="16">FIFA 16</option>
-							<option value="17">FIFA 17</option>
-							<option value="18">FIFA 18</option>
-							<option value="19">FIFA 19</option>
-							<option value="20">FIFA 20</option>
-							<option value="21">FIFA 21</option>
-							<option value="22">FIFA 22</option>
-							<option value="23">FIFA 23</option>
-							<option value="24">FIFA 24</option>
-						</select>
+							onValueChange={setSelectedVersion}>
+							<SelectTrigger className="w-[180px]">
+								<SelectValue placeholder="Version de Fifa"/>
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Version de Fifa</SelectLabel>
+									<SelectItem value="24">FIFA 24</SelectItem>
+									<SelectItem value="23">FIFA 23</SelectItem>
+									<SelectItem value="22">FIFA 22</SelectItem>
+									<SelectItem value="21">FIFA 21</SelectItem>
+									<SelectItem value="20">FIFA 20</SelectItem>
+									<SelectItem value="19">FIFA 19</SelectItem>
+									<SelectItem value="18">FIFA 18</SelectItem>
+									<SelectItem value="17">FIFA 17</SelectItem>
+									<SelectItem value="16">FIFA 16</SelectItem>
+									<SelectItem value="15">FIFA 15</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 					</div>
 				</div>
 				<div className="text-sm">
