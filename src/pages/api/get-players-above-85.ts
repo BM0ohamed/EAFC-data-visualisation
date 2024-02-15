@@ -6,11 +6,22 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const CSV_FILE_PATH = path.join(process.cwd(), 'src', 'dataset', 'filtered', 'player_over_81.csv');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const { fifaVersion, minOverall  } = req.query;
+	if (!fifaVersion) {
+		return res.status(400).json({ error: 'FIFA version is required' });
+	}
+	const fifaVersionInt = parseInt(fifaVersion as string);
+
+	let minOverallInt = 85; // Default minimum overall value
+	if (minOverall) {
+		minOverallInt = parseInt(minOverall as string);
+	}
 
 	const playerData: TPlayer[] = [];
 	const stream = fs.createReadStream(CSV_FILE_PATH).pipe(csv());
+
 	for await (const player of stream) {
-		if (parseInt(player.fifa_version) === 24 && parseInt(player.overall) >= 85) {
+		if (parseInt(player.fifa_version) === fifaVersionInt && parseInt(player.overall) >= minOverallInt) {
 			playerData.push({
 				name: player.short_name,
 				overall: player.overall,

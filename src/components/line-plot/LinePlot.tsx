@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from 'react';
+"use client"
 import { createLinePlot } from "@/components/line-plot/LinePlotService";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
+import * as React from "react"
+import { useEffect, useState } from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 export type StatKey = 'pace' | 'shooting' | 'passing' | 'dribbling' | 'defending' | 'physicality' | 'overall';
 
@@ -12,20 +20,39 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName}) => {
 	const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 	const [selectedPlayer, setSelectedPlayer] = useState<TPlayer | null>(null);
 	const [selectedStats, setSelectedStats] = useState<StatKey[]>(['overall']);
+	const [playersDictionary, setPlayersDictionary] = useState<{ value: string; label: string; id : number}[]>([]);
+	const [value, setValue] = React.useState("")
+	const [open, setOpen] = React.useState(false)
 
 	useEffect(() => {
 		const fetchData = async () => {
 			const fifaVersion = 24; // Hardcoded value for FIFA version
 			const response = await fetch(`/api/get-players?fifaVersion=${fifaVersion}`);
 			if (response.ok) {
-				const players: TPlayer[] = await response.json();
+				const players = await response.json();
 				setData(players);
+
+				const playerNamesSet = new Set();
+				// @ts-ignore
+				const dictionary = players.reduce((acc, player) => {
+					const lowercaseName = player.name.toLowerCase();
+					if (!playerNamesSet.has(lowercaseName)) {
+						acc.push({
+							value: lowercaseName,
+							label: player.name,
+							id: player.playerId,
+						});
+						playerNamesSet.add(lowercaseName);
+					}
+					return acc;
+				}, []);
+
+				setPlayersDictionary(dictionary);
 			}
 		};
 
 		fetchData();
-	}, []); // Empty dependency array means this runs once on mount
-
+	}, []);
 	useEffect(() => {
 		const player = data.find(player => player.playerId === selectedPlayerId);
 		setSelectedPlayer(player ?? null);
@@ -52,7 +79,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName}) => {
 				setSelectedPlayerId(player.playerId);
 			}
 		}
-	}, [initialSelectedPlayerName, data]);
+	}, [initialSelectedPlayerName, data, value]);
 
 	const transformData = (dataSet: TPlayer[], selectedPlayer: TPlayer | null): TPlayer[] => {
 		if (!selectedPlayer) return [];
@@ -71,18 +98,48 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName}) => {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<select
-				className="bg-gray-700 hover:bg-gray-600 max-w-64"
-				onChange={e => setSelectedPlayerId(Number(e.target.value))}
-				value={selectedPlayerId || ''}
-			>
-				<option value="">Select a player</option>
-				{data.map(player => (
-					<option key={`${player.playerId}-${player.fifaVersion}`} value={player.playerId}>
-						{player.name}
-					</option>
-				))}
-			</select>
+			<Popover open={open} onOpenChange={setOpen}>
+				<PopoverTrigger asChild>
+					<Button
+						variant="outline"
+						className="w-[200px] justify-between border rounded-xl"
+						role="combobox"
+						aria-expanded={open}
+					>
+						{value
+							? playersDictionary.find((playersDictionary) => playersDictionary.value === value)?.label
+							: "Choisir un joueur"}
+						<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+					</Button>
+				</PopoverTrigger>
+				<PopoverContent className="w-[200px] p-0">
+					<Command>
+						<CommandInput placeholder="Choisir un joueur"/>
+						<CommandEmpty>Pas de joueur selectionné</CommandEmpty>
+						<CommandGroup>
+							{playersDictionary.map((player) => (
+								<CommandItem
+									key={player.value}
+									value={player.value}
+									onSelect={(currentValue) => {
+										setSelectedPlayerId(Number(player.id))
+										setValue(currentValue === value ? "" : currentValue)
+										setOpen(false)
+									}}
+								>
+									<Check
+										className={cn(
+											"mr-2 h-4 w-4",
+											value === player.value ? "opacity-100" : "opacity-0"
+										)}
+									/>
+									{player.label}
+								</CommandItem>
+							))}
+						</CommandGroup>
+					</Command>
+				</PopoverContent>
+			</Popover>
 
 			<div className="flex flex-row gap-4">
 				{["overall", "pace", "shooting", "passing", "dribbling", "defending", "physicality"].map((statName: string) => (

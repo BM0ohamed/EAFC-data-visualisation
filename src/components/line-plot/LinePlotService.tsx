@@ -2,7 +2,6 @@
 
 import * as d3 from 'd3';
 
-
 export const createLinePlot = (
 	data: TPlayer[],
 	height: number,
@@ -43,7 +42,6 @@ export const createLinePlot = (
 		.domain([15, 24])
 		.range([margin.left, w]);
 
-
 	let minValue: number = Infinity;
 	let maxValue: number = -Infinity;
 
@@ -60,7 +58,7 @@ export const createLinePlot = (
 	if (minValue === Infinity) minValue = 0; // Default minimum if no data
 	if (maxValue === -Infinity) maxValue = 1; // Default maximum if no data, ensuring a range
 
-// Update the y-axis scale with the new min and max
+	// Update the y-axis scale with the new min and max
 	const y: d3.ScaleLinear<number, number> = d3.scaleLinear()
 		.domain([minValue - 1, maxValue]) // Use the recalculated min and max
 		.nice()
@@ -80,7 +78,6 @@ export const createLinePlot = (
 	svg.append("g")
 		.call(yAxis);
 
-
 	svg.append("text")
 		.attr("transform", `translate(${width - 1 * margin.right}, ${height - 0.5 * margin.bottom})`)
 		.style("font-size", "14px")
@@ -98,16 +95,40 @@ export const createLinePlot = (
 		.style("fill", "#ffffff")
 		.text("Note");
 
-	const tooltip = svg.append("text")
-		.style("font-size", "12px")
-		.style("fill", "#ffffff")
-		.style("visibility", "hidden");
+	const tooltip = svg.append("g")
+		.attr("class", "tooltip")
+		.style("display", "none");
 
-	const line = d3.line<TPlayer>()
-		.x((d, i) => x(data[i].fifaVersion as number))
-		.y(d => y(d.rating[selectedStats[0]] as any));
 
-	svg.selectAll(".line").remove();
+	tooltip.append("text")
+		.attr("x", 150)
+		.attr("y", 30)
+		.attr("dy", "0.32em")
+		.style("text-anchor", "middle")
+		.style("fill", "white")
+		.attr("font-size", "12px")
+		.attr("font-weight", "bold");
+
+	selectedStats.forEach(stat => {
+		svg.selectAll(`circle.${stat}`)
+			.data(data)
+			.enter().append("circle")
+			.attr("class", `dot ${stat}`) // Assign class for styling and identification
+			.attr("cx", (d) => x(d.fifaVersion as number))
+			.attr("cy", (d) => y(d.rating[stat] as any))
+			.attr("r", 5)
+			.style("fill", "white")
+			.style("stroke", (d) => color(d.rating[stat] as any))
+			.style("stroke-width", 2)
+			.on("mouseover", function (event, d) {
+				tooltip.style("display", null);
+				tooltip.select("text").text(`Fifa Version: ${d.fifaVersion}, ${stat}: ${d.rating[stat]}`);
+			})
+			.on("mouseout", function () {
+				tooltip.style("display", "none");
+			});
+	});
+
 
 	const paths = selectedStats.map((s, index) => {
 		const line = d3.line<TPlayer>()
