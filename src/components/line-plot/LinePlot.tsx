@@ -79,7 +79,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName}) => {
 				setSelectedPlayerId(player.playerId);
 			}
 		}
-	}, [initialSelectedPlayerName, data, value]);
+	}, [initialSelectedPlayerName, data]);
 
 	const transformData = (dataSet: TPlayer[], selectedPlayer: TPlayer | null): TPlayer[] => {
 		if (!selectedPlayer) return [];
