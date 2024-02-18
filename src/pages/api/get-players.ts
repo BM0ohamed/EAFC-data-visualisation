@@ -3,7 +3,7 @@ import path from 'path';
 import csv from 'csv-parser';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const CSV_FILE_PATH = path.join(process.cwd(), 'src', 'dataset', 'filtered', 'player_over_81.csv');
+const CSV_FILE_PATH = path.join(process.cwd(), 'src', 'dataset', 'filtered', 'male_players_over_84.csv');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 
-const ITEMS_PER_PAGE: number = 10;
+const ITEMS_PER_PAGE: number = 35;
 
 interface PlayerListProps {
 	selectedVersion: string; // Define the prop
