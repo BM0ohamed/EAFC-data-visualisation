@@ -1,13 +1,15 @@
-export function findClosestPlayers(attributes: number[], players: TPlayer[]): TPlayer[] {
+import { Attribute } from "@/components/find-your-player/FindYourPlayer";
+
+export function findClosestPlayers(attributes: Attribute[], players: TPlayer[]): TPlayer[] {
+	console.log("dans l'algo", attributes)
 	return players
 		.map(player => {
+			const activeAttributes = attributes.filter(attr => attr.value !== null);
 			const distance = Math.sqrt(
-				Math.pow(player.rating.pace - attributes[0], 2) +
-				Math.pow(player.rating.dribbling - attributes[1], 2) +
-				Math.pow(player.rating.shooting - attributes[2], 2) +
-				Math.pow(player.rating.defending - attributes[3], 2) +
-				Math.pow(player.rating.passing - attributes[4], 2) +
-				Math.pow(player.rating.physicality - attributes[5], 2)
+				activeAttributes.reduce((acc, attribute) => {
+					// @ts-ignore
+					return acc + Math.pow(player.rating[attribute.label.toLowerCase()] - attribute.value, 2);
+				}, 0)
 			);
 			return {player, distance};
 		})

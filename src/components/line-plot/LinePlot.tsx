@@ -30,6 +30,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 	const [selectedPlayBasedOnVersion, setSelectedPlayerBasedOnVersion] = useState<TPlayer>();
 	const [fifaVersions, setFifaVersions] = useState<string[]>()
 	const [dataFilteredByPlayer, setDataFilteredByPlayer] = useState<TPlayer[]>()
+
 	useEffect(() => {
 		if (selectedVersion) {
 			const player = data.find(player => player.playerId === selectedPlayerId
@@ -76,7 +77,9 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 			const filteredDataByPlayer = transformData(data, player);
 			const versionsExtracted = filteredDataByPlayer.map(player => player.fifaVersion.toString());
 			setFifaVersions(versionsExtracted);
-			setSelectedVersion(versionsExtracted[0]);
+			if (!selectedVersion || !versionsExtracted.includes(selectedVersion)) {
+				setSelectedVersion(versionsExtracted[0]);
+			}
 		}
 	}, [data, selectedPlayerId]);
 
