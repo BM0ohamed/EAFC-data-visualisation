@@ -36,6 +36,12 @@ export default function Navbar() {
 							Liste des joueurs
 						</Link>
 					</Button>
+					<Button variant={"link"}
+							asChild>
+						<Link href="find-your-player">
+							Trouve ton joueur
+						</Link>
+					</Button>
 
 
 				</div>
