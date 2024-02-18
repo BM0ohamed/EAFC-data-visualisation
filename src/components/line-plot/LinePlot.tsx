@@ -1,5 +1,5 @@
 "use client"
-import { createLinePlot } from "@/components/line-plot/LinePlotService";
+import CreateLinePlot from "@/components/line-plot/LinePlotService";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
 import * as React from "react"
@@ -9,7 +9,6 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import FutCard from "@/components/FutCard/FutCardService";
-import FifaVersionSelect from "@/components/ui/FifaVersionSelect";
 import FifaVersionSelectRestricted from "@/components/ui/FifaVersionSelectRestricted";
 
 export type StatKey = 'pace' | 'shooting' | 'passing' | 'dribbling' | 'defending' | 'physicality' | 'overall';
@@ -30,7 +29,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 	const [selectedVersion, setSelectedVersion] = useState<string>();
 	const [selectedPlayBasedOnVersion, setSelectedPlayerBasedOnVersion] = useState<TPlayer>();
 	const [fifaVersions, setFifaVersions] = useState<string[]>()
-
+	const [dataFilteredByPlayer, setDataFilteredByPlayer] = useState<TPlayer[]>()
 	useEffect(() => {
 		if (selectedVersion) {
 			const player = data.find(player => player.playerId === selectedPlayerId
@@ -84,14 +83,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 	useEffect(() => {
 		if (selectedPlayer) {
 			const dataFilteredByPlayer = transformData(data, selectedPlayer);
-			createLinePlot(
-				dataFilteredByPlayer,
-				600,
-				800,
-				{top: 50, right: 50, bottom: 50, left: 50},
-				"fifa_version",
-				selectedStats
-			);
+			setDataFilteredByPlayer(dataFilteredByPlayer);
 		}
 	}, [selectedPlayer, selectedStats]);
 
@@ -124,7 +116,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 	// @ts-ignore
 	return (
 		<div className="flex flex-col gap-4">
-			<div style={{display:'flex', flexDirection:'row', gap:'4px'}}>
+			<div style={{display: 'flex', flexDirection: 'row', gap: '20px'}}>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button
@@ -189,7 +181,16 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 				))}
 			</div>
 			<div style={{display: 'flex', flexDirection: 'row'}}>
-				<div id="line-plot"></div>
+				{!!dataFilteredByPlayer &&
+                    <CreateLinePlot
+                        data={dataFilteredByPlayer}
+                        height={600}
+                        width={800}
+                        margin={{top: 50, right: 100, bottom: 50, left: 50}}
+                        attribute_x={"fifa_version"}
+                        selectedStats={selectedStats}
+                        setSelectedVersion={setSelectedVersion}/>}
+
 				{!!selectedPlayBasedOnVersion &&
                     <FutCard playerData={selectedPlayBasedOnVersion} height={400} width={200}/>}
 			</div>
