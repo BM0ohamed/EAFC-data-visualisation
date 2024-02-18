@@ -17,10 +17,11 @@ export default function Home() {
 function PlayerStatOverTime() {
 	const query = useSearchParams();
 	const playerName = query?.get("playerName");
+	const fifaVersion = query?.get("version");
 
 	return (
 		<>
-			{!!playerName && <LinePlot initialSelectedPlayerName={playerName}/>}
+			{!!playerName && !!fifaVersion &&<LinePlot initialSelectedPlayerName={playerName} initialVersion={fifaVersion}/>}
 			{!playerName && <LinePlot/>}
 		</>
 	);

@@ -27,7 +27,7 @@ export default function PlayerLine({
 			</td>
 			<td>
 				<Link className="hover:text-gray-300 p-4 flex items-center space-x-2"
-					  href={`/player-stat-over-time?playerName=${name}`}>
+					  href={`/player-stat-over-time?playerName=${name}&version=${fifaVersion}`}>
 					<img
 						alt="Player"
 						className="h-10 w-10 rounded-full"
