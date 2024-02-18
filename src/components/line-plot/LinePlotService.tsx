@@ -174,7 +174,7 @@ const CreateLinePlot: React.FC<CreateLinePlotProps> = ({
 			const paths = selectedStats.map((s, index) => {
 				const line = d3.line<TPlayer>()
 					.x((d, i) => x(data[i].fifaVersion as number))
-					.y(d => y(d.rating[s] as any)); // Ensure y-value is correctly bound to each stat
+					.y(d => y(d.rating[s] as any));
 
 				const path = svg.append("path")
 					.datum(data) // Bind data for each stat
