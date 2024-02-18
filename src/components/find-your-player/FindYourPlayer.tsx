@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import SliderAndInput from "@/components/find-your-player/SliderAndInput";
 import { useEffect, useState } from "react";
@@ -6,9 +6,12 @@ import FifaVersionSelect from "@/components/ui/FifaVersionSelect";
 import { findClosestPlayers } from "@/components/find-your-player/FindYourPlayerService";
 import FutCard from "@/components/FutCard/FutCardService";
 
+export interface Attribute {
+	label: string;
+	value?: number;
+}
 
 interface FindYourPlayerProps {
-
 }
 
 const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
@@ -22,6 +25,20 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 	const [data, setData] = useState<TPlayer[]>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [closestPlayers, setClosestPlayers] = useState<TPlayer[]>();
+	const [attributes, setAttributes] = useState<Attribute[]>([]);
+
+	const handleDeactivate = (label: string, isActive: boolean, value: number) => {
+		if (!isActive) {
+			// If attribute is deactivated, remove it from the list
+			const updatedAttributes = attributes.filter((attr) => attr.label !== label);
+			setAttributes(updatedAttributes);
+		} else {
+			// If attribute is reactivated, add it back to the list with its original value
+			const updatedAttributes = [...attributes.filter((attr) => attr.label !== label), {label, value}];
+			setAttributes(updatedAttributes);
+		}
+	};
+
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -45,36 +62,82 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 
 	useEffect(() => {
 		if (data) {
-			const attributes = Array(pace, dribbling, shooting, defending, passing, physic);
-			const playersFromAlgorithm = findClosestPlayers(attributes, data);
-			setClosestPlayers(playersFromAlgorithm);
+			const attributesArray: Attribute[] = [
+				{label: "Pace", value: pace},
+				{label: "Dribbling", value: dribbling},
+				{label: "Shooting", value: shooting},
+				{label: "Defending", value: defending},
+				{label: "Passing", value: passing},
+				{label: "Physicality", value: physic},
+			];
+			setAttributes(attributesArray);
 		}
 	}, [data, pace, dribbling, shooting, defending, passing, physic])
 
+	useEffect(() => {
+		if (data) {
+			const playersFromAlgorithm = findClosestPlayers(attributes, data);
+			setClosestPlayers(playersFromAlgorithm);
+		}
+	}, [attributes, data]);
+
 	return (
 		<div className="flex flex-row gap-4 px-4 py-6">
-			<div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-				<FifaVersionSelect selectedVersion={selectedVersion}
-								   setSelectedVersion={setSelectedVersion}></FifaVersionSelect>
-				<SliderAndInput value={pace} setValue={setPace} label={"Pace"}></SliderAndInput>
-				<SliderAndInput value={dribbling} setValue={setDribbling} label={"Dribble"}></SliderAndInput>
-				<SliderAndInput value={shooting} setValue={setShooting} label={"Shoot"}></SliderAndInput>
-				<SliderAndInput value={defending} setValue={setDefending} label={"Defence"}></SliderAndInput>
-				<SliderAndInput value={passing} setValue={setPassing} label={"Pass"}></SliderAndInput>
-				<SliderAndInput value={physic} setValue={setPhysic} label={"Physicality"}></SliderAndInput>
+			<div style={{display: "flex", flexDirection: "column", gap: "12px"}}>
+				<FifaVersionSelect
+					selectedVersion={selectedVersion}
+					setSelectedVersion={setSelectedVersion}
+				></FifaVersionSelect>
+				<SliderAndInput
+					value={pace}
+					setValue={setPace}
+					label={"Pace"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
+				<SliderAndInput
+					value={dribbling}
+					setValue={setDribbling}
+					label={"Dribble"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
+				<SliderAndInput
+					value={shooting}
+					setValue={setShooting}
+					label={"Shoot"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
+				<SliderAndInput
+					value={defending}
+					setValue={setDefending}
+					label={"Defence"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
+				<SliderAndInput
+					value={passing}
+					setValue={setPassing}
+					label={"Pass"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
+				<SliderAndInput
+					value={physic}
+					setValue={setPhysic}
+					label={"Physicality"}
+					onToggleAttribute={handleDeactivate}
+				></SliderAndInput>
 			</div>
-			<div style={{display:'flex',flexDirection:'row',gap:'8px'}}>
-				{!!closestPlayers && closestPlayers.map((playerData, index) => (
-					<FutCard
-						key={index}
-						playerData={playerData}
-						height={400}
-						width={200}
-					/>
-				))}
+			<div style={{display: "flex", flexDirection: "row", gap: "8px"}}>
+				{!!closestPlayers &&
+					closestPlayers.map((playerData, index) => (
+						<FutCard
+							key={index}
+							playerData={playerData}
+							height={400}
+							width={200}
+						/>
+					))}
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default FindYourPlayer
+export default FindYourPlayer;
