@@ -64,17 +64,17 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 
 	useEffect(() => {
 		if (data) {
-			const attributesArray: Attribute[] = [
-				activeAttributes.has("Pace") && {label: "Pace", value: pace},
-				activeAttributes.has("Dribbling") && {label: "Dribbling", value: dribbling},
-				activeAttributes.has("Shooting") && {label: "Shooting", value: shooting},
-				activeAttributes.has("Defending") && {label: "Defending", value: defending},
-				activeAttributes.has("Passing") && {label: "Passing", value: passing},
-				activeAttributes.has("Physicality") && {label: "Physicality", value: physic},
-			].filter(Boolean); // Filtre les valeurs fausses pour s'assurer que seuls les attributs actifs sont inclus
+			const attributesArray: Attribute[] = [];
+			if (activeAttributes.has("Pace")) attributesArray.push({label: "Pace", value: pace});
+			if (activeAttributes.has("Dribbling")) attributesArray.push({label: "Dribbling", value: dribbling});
+			if (activeAttributes.has("Shooting")) attributesArray.push({label: "Shooting", value: shooting});
+			if (activeAttributes.has("Defending")) attributesArray.push({label: "Defending", value: defending});
+			if (activeAttributes.has("Passing")) attributesArray.push({label: "Passing", value: passing});
+			if (activeAttributes.has("Physicality")) attributesArray.push({label: "Physicality", value: physic});
 			setAttributes(attributesArray);
 		}
 	}, [data, pace, dribbling, shooting, defending, passing, physic, activeAttributes]);
+
 
 	useEffect(() => {
 		if (data) {
