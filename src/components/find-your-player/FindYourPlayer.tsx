@@ -26,17 +26,19 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [closestPlayers, setClosestPlayers] = useState<TPlayer[]>();
 	const [attributes, setAttributes] = useState<Attribute[]>([]);
-
-	const handleDeactivate = (label: string, isActive: boolean, value: number) => {
-		if (!isActive) {
-			// If attribute is deactivated, remove it from the list
-			const updatedAttributes = attributes.filter((attr) => attr.label !== label);
-			setAttributes(updatedAttributes);
-		} else {
-			// If attribute is reactivated, add it back to the list with its original value
-			const updatedAttributes = [...attributes.filter((attr) => attr.label !== label), {label, value}];
-			setAttributes(updatedAttributes);
-		}
+	const [activeAttributes, setActiveAttributes] = useState<Set<string>>(new Set([
+		"Pace", "Dribbling", "Shooting", "Defending", "Passing", "Physicality"
+	]));
+	const handleDeactivate = (label: string, isActive: boolean) => {
+		setActiveAttributes((prevActiveAttributes) => {
+			const newActiveAttributes = new Set(prevActiveAttributes);
+			if (!isActive) {
+				newActiveAttributes.delete(label);
+			} else {
+				newActiveAttributes.add(label);
+			}
+			return newActiveAttributes;
+		});
 	};
 
 
@@ -63,20 +65,21 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 	useEffect(() => {
 		if (data) {
 			const attributesArray: Attribute[] = [
-				{label: "Pace", value: pace},
-				{label: "Dribbling", value: dribbling},
-				{label: "Shooting", value: shooting},
-				{label: "Defending", value: defending},
-				{label: "Passing", value: passing},
-				{label: "Physicality", value: physic},
-			];
+				activeAttributes.has("Pace") && {label: "Pace", value: pace},
+				activeAttributes.has("Dribbling") && {label: "Dribbling", value: dribbling},
+				activeAttributes.has("Shooting") && {label: "Shooting", value: shooting},
+				activeAttributes.has("Defending") && {label: "Defending", value: defending},
+				activeAttributes.has("Passing") && {label: "Passing", value: passing},
+				activeAttributes.has("Physicality") && {label: "Physicality", value: physic},
+			].filter(Boolean); // Filtre les valeurs fausses pour s'assurer que seuls les attributs actifs sont inclus
 			setAttributes(attributesArray);
 		}
-	}, [data, pace, dribbling, shooting, defending, passing, physic])
+	}, [data, pace, dribbling, shooting, defending, passing, physic, activeAttributes]);
 
 	useEffect(() => {
 		if (data) {
 			const playersFromAlgorithm = findClosestPlayers(attributes, data);
+			console.log("résultat algo", playersFromAlgorithm)
 			setClosestPlayers(playersFromAlgorithm);
 		}
 	}, [attributes, data]);
@@ -97,25 +100,25 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 				<SliderAndInput
 					value={dribbling}
 					setValue={setDribbling}
-					label={"Dribble"}
+					label={"Dribbling"}
 					onToggleAttribute={handleDeactivate}
 				></SliderAndInput>
 				<SliderAndInput
 					value={shooting}
 					setValue={setShooting}
-					label={"Shoot"}
+					label={"Shooting"}
 					onToggleAttribute={handleDeactivate}
 				></SliderAndInput>
 				<SliderAndInput
 					value={defending}
 					setValue={setDefending}
-					label={"Defence"}
+					label={"Defending"}
 					onToggleAttribute={handleDeactivate}
 				></SliderAndInput>
 				<SliderAndInput
 					value={passing}
 					setValue={setPassing}
-					label={"Pass"}
+					label={"Passing"}
 					onToggleAttribute={handleDeactivate}
 				></SliderAndInput>
 				<SliderAndInput
