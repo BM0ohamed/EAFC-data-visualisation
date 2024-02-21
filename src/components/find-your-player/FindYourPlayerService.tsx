@@ -1,7 +1,6 @@
 import { Attribute } from "@/components/find-your-player/FindYourPlayer";
 
 export function findClosestPlayers(attributes: Attribute[], players: TPlayer[]): TPlayer[] {
-	console.log("dans l'algo", attributes)
 	return players
 		.map(player => {
 			const activeAttributes = attributes.filter(attr => attr.value !== null);

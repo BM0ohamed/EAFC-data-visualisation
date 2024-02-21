@@ -79,7 +79,6 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 	useEffect(() => {
 		if (data) {
 			const playersFromAlgorithm = findClosestPlayers(attributes, data);
-			console.log("résultat algo", playersFromAlgorithm)
 			setClosestPlayers(playersFromAlgorithm);
 		}
 	}, [attributes, data]);
