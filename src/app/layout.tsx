@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Visualisation intéractives FIFA 15-24",
-  description: "Visualistion intéractive autours des données de EA Sports fifa 15 à 24.",
+  title: "Visualisation interactive FIFA 15-24",
+  description: "Visualistion interactive autours des données de EA Sports fifa 15 à 24.",
 }
 
 export default function RootLayout({
