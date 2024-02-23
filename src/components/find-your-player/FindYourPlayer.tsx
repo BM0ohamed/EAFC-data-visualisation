@@ -52,7 +52,8 @@ const FindYourPlayer: React.FC<FindYourPlayerProps> = ({}) => {
 					throw new Error(`Error: ${res.status}`);
 				}
 				const playersData = await res.json();
-				setData(playersData);
+				// @ts-ignore
+				setData(playersData.filter(player => player.position !== 'GK'));
 			} catch (error) {
 				console.error("Failed to fetch players:", error);
 			} finally {

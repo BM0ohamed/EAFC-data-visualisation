@@ -22,7 +22,7 @@ const SliderAndInput: React.FC<SliderAndInputProps> = ({
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const inputValue = e.target.value.trim(); // Trim the input value
 		if (inputValue === "") {
-			setValue(0); // Set value to 0 when input is empty
+			setValue(-1); // Set value to 0 when input is empty
 		} else {
 			const parsedValue = parseInt(inputValue);
 			if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 100) {
@@ -52,7 +52,7 @@ const SliderAndInput: React.FC<SliderAndInputProps> = ({
 				disabled={!isChecked} // Disable Slider when checkbox is unchecked
 			/>
 			<Input
-				value={value === 0 ? "" : value} // Render empty string if value is 0
+				value={value === -1 ? "" : value} // Render empty string if value is 0
 				onChange={handleInputChange}
 				style={{ maxWidth: "50px" }}
 				disabled={!isChecked} // Disable Slider when checkbox is unchecked

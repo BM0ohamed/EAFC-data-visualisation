@@ -55,7 +55,11 @@ const FutCard : React.FC<FutCardProps> = ({playerData, height, width}) => {
 				.attr('xlink:href', `https://cdn.futbin.com/content/fifa${Math.round(playerData.fifaVersion)}/img/players/${playerData.playerId}.png?v=${Math.round(playerData.fifaVersion)}`)
 				.attr('width', width * 0.58)
 				.attr("x", "35%")
-				.attr("y", "22%");
+				.attr("y", "22%")
+				.on("error", function() {
+					d3.select(this).attr('xlink:href', `https://cdn.sofifa.net/player_0.svg`);
+				});
+
 
 			svg.append("text")
 				.attr("x", "15%")
