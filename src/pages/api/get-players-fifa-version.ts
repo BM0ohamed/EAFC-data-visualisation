@@ -29,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					dribbling: parseFloat(player.dribbling),
 					defending: parseFloat(player.defending),
 					physicality: parseFloat(player.physic),
+					potential: parseFloat(player.potential),
 				},
 				playerId: parseInt(player.player_id),
 				teamId: parseInt(player.club_team_id),
