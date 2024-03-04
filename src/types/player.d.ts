@@ -6,6 +6,7 @@ type TPlayerRating = {
 	defending: number
 	physicality: number
 	overall ?: number
+	potential : number
 }
 
 type TPlayer = {

@@ -109,6 +109,7 @@ const CreateLinePlot: React.FC<CreateLinePlotProps> = ({
 				.text("Note");
 
 			const tooltip = svg.append("g")
+
 				.attr("class", "tooltip")
 				.style("display", "none");
 

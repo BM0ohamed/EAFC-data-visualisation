@@ -7,7 +7,7 @@ interface PartitionChartProps {
 	margin: { top: number; right: number; bottom: number; left: number };
 }
 
-const PartitionChart: React.FC<PartitionChartProps> = ({ data, margin }) => {
+const PartitionChart: React.FC<PartitionChartProps> = ({data, margin}) => {
 	const svgRef = useRef<SVGSVGElement | null>(null);
 
 	useEffect(() => {
@@ -50,16 +50,37 @@ const PartitionChart: React.FC<PartitionChartProps> = ({ data, margin }) => {
 			.append("g")
 			.attr("transform", `translate(${margin.left + width / 2},${margin.top + height / 2})`);
 
+		const tooltip = svg.append("g")
+			.attr("class", "tooltip")
+			.style("display", "none");
+
+
+		tooltip.append("text")
+			.style("text-anchor", "middle")
+			.style("fill", "white")
+			.attr("font-size", "16px")
+			.attr("font-weight", "bold");
+
 		// Append the arcs.
 		const path = svg.append("g")
 			.selectAll("path")
 			.data(root.descendants().slice(1))
 			.join("path")
-			.attr("fill", d => { while ((d as any).depth > 1) d = (d as any).parent; return color((d as any).data.name); })
+			.attr("fill", d => {
+				while ((d as any).depth > 1) d = (d as any).parent;
+				return color((d as any).data.name);
+			})
 			.attr("fill-opacity", d => arcVisible((d as any).current) ? ((d as any).children ? 0.6 : 0.4) : 0)
 			.attr("pointer-events", d => arcVisible((d as any).current) ? "auto" : "none")
-			.attr("d", d => arc((d as any).current));
-
+			.attr("d", d => arc((d as any).current))
+			.on("mouseover", function (event, d) {
+				tooltip.style("display", null);
+				// @ts-ignore
+				tooltip.select("text").text(`${d.data.name}`);
+			})
+			.on("mouseout", function () {
+				tooltip.style("display", "none");
+			});
 		// Make them clickable if they have children.
 		path.filter(d => (d as any).children)
 			.style("cursor", "pointer")
@@ -80,7 +101,8 @@ const PartitionChart: React.FC<PartitionChartProps> = ({ data, margin }) => {
 			.attr("dy", "0.35em")
 			.attr("fill-opacity", d => +labelVisible((d as any).current))
 			.attr("transform", d => labelTransform((d as any).current))
-			.text(d => (d as any).data.name);
+			.text(d => (d as any).data.name)
+			.style("fill", "#FFFFFF");
 
 		const parent = svg.append("circle")
 			.datum(root)
@@ -102,9 +124,6 @@ const PartitionChart: React.FC<PartitionChartProps> = ({ data, margin }) => {
 
 			const t = svg.transition().duration(750);
 
-			// Transition the data on all arcs, even the ones that aren’t visible,
-			// so that if this transition is interrupted, entering arcs will start
-			// the next transition from the desired position.
 			// @ts-ignore
 			path.transition(t)
 				.tween("data", d => {
@@ -152,7 +171,7 @@ const PartitionChart: React.FC<PartitionChartProps> = ({ data, margin }) => {
 	}, [data, margin]);
 
 	return (
-		<svg ref={svgRef} style={{ font: '10px sans-serif' }} />
+		<svg ref={svgRef} style={{font: '10px sans-serif'}}/>
 	);
 }
 

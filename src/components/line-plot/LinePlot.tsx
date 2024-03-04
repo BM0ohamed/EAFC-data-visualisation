@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import FutCard from "@/components/FutCard/FutCardService";
 import FifaVersionSelectRestricted from "@/components/ui/FifaVersionSelectRestricted";
 
-export type StatKey = 'pace' | 'shooting' | 'passing' | 'dribbling' | 'defending' | 'physicality' | 'overall';
+export type StatKey = 'pace' | 'shooting' | 'passing' | 'dribbling' | 'defending' | 'physicality' | 'overall' | 'potential';
 
 interface LinePlotProps {
 	initialSelectedPlayerName?: string; // Optional prop for initial selected player name
@@ -22,7 +22,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 	const [data, setData] = useState<TPlayer[]>([]);
 	const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 	const [selectedPlayer, setSelectedPlayer] = useState<TPlayer | null>(null);
-	const [selectedStats, setSelectedStats] = useState<StatKey[]>(['overall']);
+	const [selectedStats, setSelectedStats] = useState<StatKey[]>(['overall', 'potential']);
 	const [playersDictionary, setPlayersDictionary] = useState<{ value: string; label: string; id: number }[]>([]);
 	const [value, setValue] = React.useState("")
 	const [open, setOpen] = React.useState(false)
@@ -172,7 +172,7 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 
 
 			<div className="flex flex-row gap-4">
-				{["overall", "pace", "shooting", "passing", "dribbling", "defending", "physicality"].map((statName: string) => (
+				{["overall", "potential", "pace", "shooting", "passing", "dribbling", "defending", "physicality"].map((statName: string) => (
 					<label className="flex gap-1" key={statName}>
 						<input
 							type="checkbox"
