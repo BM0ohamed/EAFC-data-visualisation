@@ -26,14 +26,14 @@ export default function Navbar() {
 					</Button>
 					<Button variant={"link"}
 							asChild>
-						<Link href="player-stat-over-time">
-							Statistiques détaillées
+						<Link href="list-players">
+							Liste des joueurs
 						</Link>
 					</Button>
 					<Button variant={"link"}
 							asChild>
-						<Link href="list-players">
-							Liste des joueurs
+						<Link href="player-stat-over-time">
+							Statistiques détaillées
 						</Link>
 					</Button>
 					<Button variant={"link"}
