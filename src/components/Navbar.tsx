@@ -42,9 +42,15 @@ export default function Navbar() {
 							Trouve ton joueur
 						</Link>
 					</Button>
-
-
+					<Button variant={"link"}
+							asChild>
+						<Link href="https://observablehq.com/@guillerm-martin-ws/line-chart-evolution-joueur"
+							  target="_blank">
+							Plus d&apos;informations
+						</Link>
+					</Button>
 				</div>
+
 			</div>
 		</nav>
 	)
