@@ -47,7 +47,9 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 			if (response.ok) {
 				const players = await response.json();
 				setData(players);
-
+				if (!initialSelectedPlayerName) {
+					setSelectedPlayerId(players[0].playerId);
+				}
 				const playerNamesSet = new Set();
 				// @ts-ignore
 				const dictionary = players.reduce((acc, player) => {
@@ -128,7 +130,8 @@ const LinePlot: React.FC<LinePlotProps> = ({initialSelectedPlayerName, initialVe
 							role="combobox"
 							aria-expanded={open}
 						>
-							{value
+							{
+								value
 								? playersDictionary.find((playersDictionary) => playersDictionary.value === value)?.label
 								: "Choisir un joueur"}
 							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
